@@ -1,0 +1,1232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Balcony — Public Health Leadership Compass</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #F6F4EF;
+  --surface: #FFFFFF;
+  --surface2: #F0EDE6;
+  --border: #E2DDD6;
+  --border2: #C8C2B8;
+  --text: #1C1A17;
+  --text2: #6A6560;
+  --text3: #9E9890;
+  --teal: #1A7A5E;
+  --teal-light: #E3F2EC;
+  --teal-mid: #2A9E78;
+  --amber: #7A500A;
+  --amber-light: #FDF2DC;
+  --amber-mid: #B8780E;
+  --purple: #483D96;
+  --purple-light: #ECEAFB;
+  --coral: #943020;
+  --coral-light: #FBEAE7;
+  --r: 14px;
+  --rsm: 8px;
+  --sidebar: 230px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── INTRO ── */
+#intro-screen {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 24px 80px;
+}
+
+.intro-inner { max-width: 640px; width: 100%; }
+
+.intro-eyebrow {
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 20px; font-weight: 400;
+}
+
+.intro-title {
+  font-family: 'Lora', serif;
+  font-size: clamp(28px, 5vw, 42px);
+  line-height: 1.18; color: var(--text); margin-bottom: 40px;
+}
+.intro-title em { font-style: italic; color: var(--teal); }
+
+.story-block { margin-bottom: 28px; }
+.story-block p { font-size: 16px; line-height: 1.85; color: var(--text2); margin-bottom: 18px; }
+.story-block p:last-child { margin-bottom: 0; }
+
+.story-section-label {
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  font-weight: 500; margin-bottom: 14px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.label-expert { color: var(--amber); }
+.label-pull { color: var(--coral); }
+.label-cost { color: var(--purple); }
+.label-turn { color: var(--teal); }
+.label-new { color: var(--teal); }
+
+.pull-quote {
+  border-left: 3px solid var(--teal-mid);
+  margin: 28px 0; padding: 4px 0 4px 24px;
+}
+.pull-quote p {
+  font-family: 'Lora', serif; font-size: 18px;
+  line-height: 1.6; color: var(--text); font-style: italic;
+}
+
+.story-divider {
+  display: flex; align-items: center; gap: 14px; margin: 36px 0;
+}
+.story-divider-line { flex: 1; height: 1px; background: var(--border); }
+.story-divider-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border2); }
+
+.begin-btn {
+  display: inline-flex; align-items: center; gap: 10px; margin-top: 40px;
+  padding: 14px 28px; background: var(--teal); color: white; border: none;
+  border-radius: 40px; font-family: 'DM Sans', sans-serif;
+  font-size: 15px; font-weight: 500; cursor: pointer;
+  transition: background .15s, transform .1s;
+}
+.begin-btn:hover { background: var(--teal-mid); }
+.begin-btn:active { transform: scale(.98); }
+.begin-arrow {
+  width: 18px; height: 18px; border-radius: 50%;
+  background: rgba(255,255,255,.25);
+  display: flex; align-items: center; justify-content: center; font-size: 12px;
+}
+
+/* ── APP SHELL ── */
+#app-shell { display: none; min-height: 100vh; }
+#app-shell.visible { display: flex; }
+
+.sidebar {
+  width: var(--sidebar); min-height: 100vh;
+  background: var(--surface); border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  position: fixed; top: 0; left: 0; bottom: 0; z-index: 100;
+  transition: transform .25s ease;
+}
+
+.sidebar-head { padding: 24px 20px 18px; border-bottom: 1px solid var(--border); }
+.sidebar-logo { font-family: 'Lora', serif; font-size: 17px; color: var(--text); line-height: 1.25; }
+.sidebar-sub { font-size: 11px; color: var(--text3); margin-top: 3px; letter-spacing: .05em; }
+
+.sidebar-nav { padding: 14px 10px; flex: 1; overflow-y: auto; }
+
+.nav-item {
+  display: flex; align-items: center; gap: 10px; width: 100%;
+  padding: 9px 12px; border-radius: var(--rsm); border: none;
+  background: none; color: var(--text2); font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px; font-weight: 400; cursor: pointer;
+  text-align: left; transition: all .13s; margin-bottom: 1px;
+}
+.nav-item:hover { background: var(--surface2); color: var(--text); }
+.nav-item.active { background: var(--teal-light); color: var(--teal); font-weight: 500; }
+.nav-icon {
+  width: 22px; height: 22px; border-radius: 5px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; flex-shrink: 0; background: var(--surface2);
+}
+.nav-item.active .nav-icon { background: var(--teal); color: white; }
+
+.sidebar-foot {
+  padding: 14px 20px; border-top: 1px solid var(--border);
+  font-size: 11.5px; color: var(--text3); line-height: 1.55;
+}
+
+.main { margin-left: var(--sidebar); flex: 1; padding: 44px 52px 80px; max-width: 820px; }
+
+.section { display: none; animation: fadeIn .2s ease; }
+.section.active { display: block; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.page-eyebrow {
+  font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--text3); font-weight: 400; margin-bottom: 8px;
+}
+.page-title { font-family: 'Lora', serif; font-size: 28px; line-height: 1.2; color: var(--text); margin-bottom: 10px; }
+.page-intro { font-size: 14.5px; color: var(--text2); line-height: 1.7; max-width: 520px; margin-bottom: 32px; }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 22px 26px; margin-bottom: 18px; }
+.card-title { font-family: 'Lora', serif; font-size: 17px; color: var(--text); margin-bottom: 10px; }
+.card p { font-size: 14px; color: var(--text2); line-height: 1.72; margin-bottom: 10px; }
+.card p:last-child { margin-bottom: 0; }
+
+.hr { height: 1px; background: var(--border); margin: 18px 0; }
+
+.insight-row {
+  display: grid; grid-template-columns: 40px 1fr;
+  gap: 14px; padding: 15px 0; border-bottom: 1px solid var(--border); align-items: start;
+}
+.insight-row:last-child { border-bottom: none; padding-bottom: 0; }
+.i-icon { width: 38px; height: 38px; border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0; }
+.ic-t { background: var(--teal-light); }
+.ic-a { background: var(--amber-light); }
+.ic-p { background: var(--purple-light); }
+.ic-c { background: var(--coral-light); }
+.i-title { font-size: 13.5px; font-weight: 500; color: var(--text); margin-bottom: 3px; }
+.i-body { font-size: 13px; color: var(--text2); line-height: 1.6; }
+
+.ev-block {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 13px 15px; background: var(--surface2); border-radius: var(--rsm); margin-bottom: 8px;
+}
+.ev-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+.ev-t { background: var(--teal-mid); }
+.ev-a { background: var(--amber-mid); }
+.ev-p { background: var(--purple); }
+.ev-c { background: var(--coral); }
+.ev-label { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 2px; }
+.ev-body { font-size: 12.5px; color: var(--text2); line-height: 1.55; }
+
+.mc {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 11px 13px; background: var(--surface2); border-radius: var(--rsm); margin-bottom: 8px;
+}
+.mc-dot { width: 7px; height: 7px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+.mc-t { background: var(--teal-mid); }
+.mc-a { background: var(--amber-mid); }
+.mc-p { background: var(--purple); }
+.mc p { font-size: 13px; color: var(--text2); line-height: 1.6; }
+.mc strong { font-weight: 500; color: var(--text); }
+
+/* Two-column view */
+.two-col {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;
+}
+.view-box { padding: 16px 18px; border-radius: var(--rsm); }
+.view-floor { background: var(--amber-light); border-left: 3px solid var(--amber-mid); }
+.view-balcony { background: var(--teal-light); border-left: 3px solid var(--teal-mid); }
+.view-tag { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 8px; }
+.view-floor .view-tag { color: var(--amber); }
+.view-balcony .view-tag { color: var(--teal); }
+.view-box p { font-size: 13px; line-height: 1.6; margin-bottom: 6px; }
+.view-box p:last-child { margin-bottom: 0; }
+.view-floor p { color: var(--amber); }
+.view-balcony p { color: var(--teal); }
+
+/* Scenarios */
+.scenario { border: 1px solid var(--border); border-radius: var(--r); margin-bottom: 12px; background: var(--surface); overflow: hidden; }
+.scenario.open { border-color: var(--teal-mid); }
+.sc-head { padding: 16px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: 14px; transition: background .13s; }
+.sc-head:hover { background: var(--surface2); }
+.scenario.open .sc-head { background: var(--teal-light); }
+.sc-title { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 2px; line-height: 1.4; }
+.scenario.open .sc-title { color: var(--teal); }
+.sc-desc { font-size: 12.5px; color: var(--text2); line-height: 1.5; }
+.scenario.open .sc-desc { color: var(--teal); opacity: .75; }
+.sc-caret { font-size: 18px; color: var(--text3); flex-shrink: 0; transition: transform .2s; }
+.scenario.open .sc-caret { transform: rotate(90deg); color: var(--teal); }
+.sc-body { display: none; padding: 18px 20px 20px; border-top: 1px solid var(--border); }
+.scenario.open .sc-body { display: block; }
+.sc-tension { font-size: 13px; color: var(--text2); line-height: 1.65; margin-bottom: 8px; }
+.sc-cost {
+  font-size: 13px; color: var(--text2); line-height: 1.65;
+  padding: 10px 13px; background: var(--coral-light);
+  border-radius: var(--rsm); margin-bottom: 14px; border-left: 3px solid var(--coral);
+}
+
+/* Reframes */
+.reframe-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.rf-box { padding: 13px 15px; border-radius: var(--rsm); }
+.rf-from { background: var(--coral-light); border-left: 3px solid var(--coral); }
+.rf-to { background: var(--teal-light); border-left: 3px solid var(--teal-mid); }
+.rf-tag { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 6px; }
+.rf-from .rf-tag { color: var(--coral); }
+.rf-to .rf-tag { color: var(--teal); }
+.rf-from p { font-size: 13px; color: var(--coral); line-height: 1.55; }
+.rf-to p { font-size: 13px; color: var(--teal); line-height: 1.55; }
+
+/* Check-in */
+.meter-wrap { margin-bottom: 18px; }
+.meter-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.meter-label { font-size: 13px; color: var(--text2); }
+.meter-val { font-size: 13px; font-weight: 500; color: var(--text); }
+.meter-track { height: 5px; background: var(--surface2); border-radius: 3px; margin-bottom: 8px; }
+.meter-fill { height: 100%; border-radius: 3px; transition: width .3s; }
+input[type=range] { width: 100%; accent-color: var(--teal); cursor: pointer; margin-bottom: 4px; }
+
+.reflect-item { margin-bottom: 10px; }
+.reflect-head {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 13px 16px; background: var(--surface2); border-radius: var(--rsm);
+  cursor: pointer; border: 1px solid var(--border); transition: border-color .13s; gap: 12px;
+}
+.reflect-head:hover { border-color: var(--border2); }
+.reflect-item.open .reflect-head { border-color: var(--teal-mid); border-radius: var(--rsm) var(--rsm) 0 0; background: var(--teal-light); }
+.reflect-q { font-size: 13.5px; color: var(--text); line-height: 1.45; }
+.reflect-item.open .reflect-q { color: var(--teal); }
+.reflect-caret { font-size: 16px; color: var(--text3); transition: transform .2s; flex-shrink: 0; }
+.reflect-item.open .reflect-caret { transform: rotate(90deg); color: var(--teal); }
+.reflect-body { display: none; }
+.reflect-item.open .reflect-body { display: block; }
+textarea {
+  width: 100%; min-height: 88px; padding: 13px 16px;
+  border: 1px solid var(--teal-mid); border-top: none;
+  border-radius: 0 0 var(--rsm) var(--rsm);
+  background: var(--surface); color: var(--text);
+  font-family: 'DM Sans', sans-serif; font-size: 13.5px; line-height: 1.65; resize: vertical;
+}
+textarea:focus { outline: none; }
+textarea::placeholder { color: var(--text3); }
+
+.save-row { display: flex; align-items: center; gap: 12px; margin-top: 16px; }
+.save-btn {
+  padding: 10px 22px; background: var(--teal); color: white; border: none;
+  border-radius: 40px; font-family: 'DM Sans', sans-serif;
+  font-size: 13.5px; font-weight: 500; cursor: pointer; transition: background .13s;
+}
+.save-btn:hover { background: var(--teal-mid); }
+.save-confirm { font-size: 12px; color: var(--teal); opacity: 0; transition: opacity .3s; }
+.save-confirm.show { opacity: 1; }
+
+/* Journal */
+.journal-entry { background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); padding: 20px 24px; margin-bottom: 14px; }
+.je-date { font-size: 11px; color: var(--text3); margin-bottom: 10px; letter-spacing: .04em; }
+.je-meters { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+.je-meter-chip { font-size: 12px; color: var(--text2); }
+.je-meter-chip strong { font-weight: 500; color: var(--text); }
+.je-qa { margin-bottom: 10px; }
+.je-qa:last-child { margin-bottom: 0; }
+.je-qlabel { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: var(--text3); margin-bottom: 4px; }
+.je-qtext { font-size: 13.5px; color: var(--text); line-height: 1.6; }
+.je-delete { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; }
+.delete-btn { font-size: 12px; color: var(--text3); background: none; border: none; cursor: pointer; padding: 4px 8px; border-radius: 4px; font-family: 'DM Sans', sans-serif; transition: color .13s; }
+.delete-btn:hover { color: var(--coral); }
+
+.empty-state { text-align: center; padding: 48px 24px; color: var(--text3); font-size: 14px; line-height: 1.6; }
+
+.chip { display: inline-block; font-size: 10.5px; font-weight: 500; letter-spacing: .05em; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; }
+.chip-teal { background: var(--teal-light); color: var(--teal); }
+.chip-amber { background: var(--amber-light); color: var(--amber); }
+.chip-purple { background: var(--purple-light); color: var(--purple); }
+.chip-coral { background: var(--coral-light); color: var(--coral); }
+
+/* Nav hint + next */
+.nav-hint { display: flex; align-items: flex-start; gap: 12px; padding: 14px 18px; background: var(--teal-light); border-radius: var(--rsm); border: 1px solid var(--border); margin-bottom: 16px; }
+.nav-hint-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; color: var(--teal); }
+.nav-hint p { font-size: 13.5px; color: var(--teal); line-height: 1.55; }
+.nav-hint strong { font-weight: 500; }
+.next-row { display: flex; justify-content: flex-end; margin-top: 8px; margin-bottom: 8px; }
+.next-btn { display: inline-flex; align-items: center; gap: 10px; padding: 12px 22px; background: var(--teal); color: white; border: none; border-radius: 40px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background .13s, transform .1s; }
+.next-btn:hover { background: var(--teal-mid); }
+.next-btn:active { transform: scale(.98); }
+.next-arrow { font-size: 16px; opacity: .85; }
+@media (min-width: 701px) { .nav-hint { display: none; } }
+
+/* Mobile */
+.menu-toggle { display: none; position: fixed; top: 14px; left: 14px; z-index: 200; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; width: 38px; height: 38px; cursor: pointer; align-items: center; justify-content: center; font-size: 17px; color: var(--text2); }
+.overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.25); z-index: 90; }
+@media (max-width: 700px) {
+  .sidebar { transform: translateX(-100%); }
+  .sidebar.open { transform: translateX(0); box-shadow: 4px 0 20px rgba(0,0,0,.1); }
+  .main { margin-left: 0; padding: 28px 20px 60px; }
+  .menu-toggle { display: flex; }
+  .reframe-pair { grid-template-columns: 1fr; }
+  .two-col { grid-template-columns: 1fr; }
+  .overlay.show { display: block; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ INTRO ══════════════ -->
+<div id="intro-screen">
+  <div class="intro-inner">
+
+    <p class="intro-eyebrow">The Balcony — Public Health Leadership Compass · Part One</p>
+
+    <h1 class="intro-title">
+      You were exceptionally good<br>
+      at holding it all together.<br>
+      That's what makes this <em>hard</em>.
+    </h1>
+
+    <div class="story-block">
+      <p>Think about how you actually learned to do what you do as an operational lead, and the skills you gained. Not just the technical and clinical skills — though those are real and hard-won — but the operational intelligence. You learned how responsive health work moves. You knew which situations were about to escalate before they did. You could hold multiple concurrent responses in your head, prioritise without being told, cover gaps before they became failures, and keep the workflow moving under pressure that most people outside the field wouldn't fully understand.</p>
+      <p>You became someone the team looked to — because you genuinely knew what to do when things were unpredictable. That knowledge wasn't given to you. You built it, over years, by being in it.</p>
+      <p>You held onto that operational role not only because you were good at it, but because you had to. The workforce wasn't always there. There were real gaps in real work that you had to fill. That was you responding to the actual conditions you were working in.</p>
+    </div>
+
+    <div class="pull-quote">
+      <p>The problem is that necessity and identity become fused over time — and when the conditions finally change, the habit and the self-concept don't automatically change with them.</p>
+    </div>
+
+    <div class="story-block">
+      <p>When a new leadership role arrives without sufficient scaffolding for a new identity to form — without a clear transition, without mentoring, without someone naming what the role actually requires — something predictable happens. A person defaults to what feels solid and certain. And the operational work is exactly that: visible, immediate, legible. You do it, and you can see whether it worked. Leadership is slower, less visible, and harder to feel confident about, especially when no one has helped you understand what it looks like from the inside.</p>
+      <p>So the operational role becomes the place where you feel genuinely capable and legitimately useful — while the leadership role sits alongside it, held in title, known but not quite inhabited. This very human response to uncertainty is extremely common in pressured health and other responsive operational settings. The new leader doesn't fully make the leadership transition, remains operational, managerial at the same time as trying to grasp the new leadership role.</p>
+      <p>In normal conditions, this can feel workable — even fine. The team is well-supported, things are held together, and the arrangement functions. But it carries a structural fragility that only becomes visible under pressure. When a surge hits, when an incident unfolds, when the organisational demands stack up, the person holding multiple roles simultaneously — operational, management, and clinical leadership — finds the load suddenly untenable. And the moment when the team most needs a stable, clear leadership presence is exactly the moment when it is hardest to provide one.</p>
+    </div>
+
+    <div class="story-block">
+      <p>This tool is about making that functional shift — not through criticism of how things have been, but with a clear understanding of why things need to shift and a practical framework for moving differently. It is designed to support the transition with compassion and without blame: for the structural conditions that made full transition difficult, for the identity that formed around what was possible rather than what was intended, and for the genuine complexity of leading well in a system that doesn't always make leadership easy.</p>
+      <p>The identity is still forming. That is not a deficit. It is a starting point.</p>
+    </div>
+
+    <button class="begin-btn" onclick="enterApp()">
+      Begin <span class="begin-arrow">→</span>
+    </button>
+
+  </div>
+</div>
+
+<!-- ══════════════ APP SHELL ══════════════ -->
+<div id="app-shell">
+
+  <button class="menu-toggle" onclick="toggleMenu()" aria-label="Menu">☰</button>
+  <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-head">
+      <div class="sidebar-logo">The Balcony</div>
+      <div class="sidebar-sub">Public health leadership · Part one</div>
+    </div>
+    <div class="sidebar-nav">
+      <button class="nav-item active" onclick="showSection('understand', this)">
+        <span class="nav-icon">◎</span> The role shift
+      </button>
+      <button class="nav-item" onclick="showSection('positions', this)">
+        <span class="nav-icon">⬡</span> Floor vs balcony
+      </button>
+      <button class="nav-item" onclick="showSection('pull', this)">
+        <span class="nav-icon">↓</span> Understanding the pull
+      </button>
+      <button class="nav-item" onclick="showSection('questions', this)">
+        <span class="nav-icon">◈</span> Your new questions
+      </button>
+      <button class="nav-item" onclick="showSection('discipline', this)">
+        <span class="nav-icon">⬡</span> Role discipline
+      </button>
+      <button class="nav-item" onclick="showSection('scenarios', this)">
+        <span class="nav-icon">↗</span> Real moments
+      </button>
+      <button class="nav-item" onclick="showSection('checkin', this)">
+        <span class="nav-icon">◳</span> Daily check-in
+      </button>
+      <button class="nav-item" onclick="showSection('journal', this)">
+        <span class="nav-icon">♦</span> My journal
+      </button>
+    </div>
+    <div class="sidebar-foot">
+      Your reflections are saved on this device only.
+      <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+        <button onclick="returnToStory()" style="background:none;border:none;padding:0;font-family:'DM Sans',sans-serif;font-size:12px;color:var(--text3);cursor:pointer;text-align:left;line-height:1.5;transition:color .13s" onmouseover="this.style.color='var(--teal)'" onmouseout="this.style.color='var(--text3)'">← Read the opening story</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- ── THE ROLE SHIFT ── -->
+    <div id="sec-understand" class="section active">
+      <p class="page-eyebrow">Where you are</p>
+      <h1 class="page-title">The nature of the shift</h1>
+      <p class="page-intro">Public health leadership is not a more senior version of what you did before. It is a different role — and understanding what that difference actually looks like in practice is the first step toward inhabiting it.</p>
+
+      <div class="card">
+        <div class="chip chip-teal">The central idea</div>
+        <h2 class="card-title">The dance floor and the balcony</h2>
+        <p>Ronald Heifetz and Marty Linsky at Harvard describe one of the most important disciplines of leadership using a simple image. Imagine a dance floor — full of movement, noise, immediate demand. When you are on the floor, you are in the action: responding, managing, solving what is right in front of you. Your attention is consumed by what is happening now.</p>
+        <p style="margin-top:10px">Now imagine stepping off the floor and up to a balcony overlooking it. From there, you can see things that are completely invisible from below: the patterns across the whole floor, the dynamics between people, where flow is breaking down, where something is about to go wrong. You can ask questions that no one on the floor has the vantage point to ask.</p>
+        <p style="margin-top:10px">In a responsive public health setting, the dance floor is the operational work — the responses, the workflows, the phone queues, the incident management. The balcony is the clinical leadership work: quality and standards oversight, pattern analysis across responses, process improvement, stakeholder relationships, education and professional development. Both are real. Both matter. But they require you to be in different positions — and you cannot fully occupy both at the same time.</p>
+        <div class="hr"></div>
+        <p style="font-size:14px;color:var(--text2);line-height:1.72">The challenge for many people moving into clinical leadership is not a lack of willingness to lead. It is that the floor keeps pulling — through habit, through genuine operational need, through an identity that was built there. This tool is about developing the discipline to choose the balcony, and to understand why that choice is harder than it sounds.</p>
+      </div>
+
+      <div class="card">
+        <div class="chip chip-amber">Why the identity hasn't fully formed</div>
+        <h2 class="card-title">When the role arrives without the scaffolding</h2>
+        <p>Most leadership transitions in public health don't come with a clear period of preparation, a structured handover, or an explicit conversation about what the new role actually requires. The title changes. The pay band changes. The job description changes on paper. But the day-to-day often doesn't — because the operational need is still there, the team still needs covering, and the new leader is still the most capable operational person in the room.</p>
+        <p>When that happens, something predictable follows: the leadership identity doesn't fully form, because there is no space and no scaffolding for it to form in. The person holds the leadership title while continuing to do the operational work — not from resistance, but because nothing has made it sufficiently clear what "doing the leadership work" would actually look like in practice.</p>
+        <p>This is not a personal failing. It is a structural one — and it is extremely common in public health and other responsive operational settings. The result is a kind of identity limbo: you have been given the leadership role, but you don't yet fully inhabit it. The operational role is where you feel legitimate. The leadership role is where you feel uncertain.</p>
+        <div class="hr"></div>
+        <div class="insight-row">
+          <div class="i-icon ic-a">🆔</div>
+          <div>
+            <p class="i-title">Imposter syndrome in role transition</p>
+            <p class="i-body">Research on leadership transitions describes a specific form of imposter syndrome that emerges when the title has arrived before the identity. The person performs confidence in the operational work — where they genuinely are competent — while feeling uncertain about whether they are "really" a leader. The operational role becomes the place to feel safe and capable. The leadership role feels like something they have been asked to perform, rather than something they are.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-t">⚖️</div>
+          <div>
+            <p class="i-title">Two things that fused over time</p>
+            <p class="i-body">There was genuine structural necessity — the operational work needed doing and the workforce wasn't always there to do it without direct involvement. And there was identity comfort — the operational space was where capability felt real and grounded. These two things became fused over time, and when the structural necessity eventually eased, the identity anchor didn't automatically lift with it.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-p">🔭</div>
+          <div>
+            <p class="i-title">What is different now</p>
+            <p class="i-body">Most people in this position reach moments when the structural conditions for stepping back genuinely shift — when management capacity arrives, when the team grows, when operational roles are filled by others. These moments don't automatically produce the leadership transition, but they create the opening for it. Recognising when that opening has arrived — and choosing to move through it — is the beginning of claiming the role in full.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="chip chip-teal">What this role actually is</div>
+        <h2 class="card-title">The substance of clinical leadership in public health</h2>
+        <p style="margin-bottom:14px">This is not a people management role — that sits with the nursing manager. This is a standards, quality, and systems leadership role. Its scope is distinct, significant, and genuinely demanding:</p>
+        <div class="insight-row">
+          <div class="i-icon ic-t">📊</div>
+          <div>
+            <p class="i-title">Standards and quality</p>
+            <p class="i-body">Holding and developing clinical and operational standards across the function. Noticing where practice is drifting, where quality is inconsistent, where what happens and what should happen have quietly diverged. Naming it, addressing it, and building the systems that sustain it — not as a one-off intervention, but as an ongoing discipline.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-p">💡</div>
+          <div>
+            <p class="i-title">Innovation and process improvement</p>
+            <p class="i-body">Asking the questions that operational pressure prevents: is this the best way to do this? Where is the system creating unnecessary friction, duplication, or risk? What would a better process look like — and what would it take to build it? This is balcony work by definition. It cannot be done from the floor.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-a">🌐</div>
+          <div>
+            <p class="i-title">Stakeholder management and system navigation</p>
+            <p class="i-body">Building and maintaining the relationships — with other parts of the health system, with partner organisations, with commissioning and governance structures — that allow the function to operate effectively and advocate for what it needs. This is leadership work that is invisible when it isn't done and enormously valuable when it is.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-c">🎓</div>
+          <div>
+            <p class="i-title">Education and professional development</p>
+            <p class="i-body">Supporting the clinical and professional growth of the team — not through people management (that belongs to the nursing manager) but through the clinical leadership functions: setting learning expectations, creating opportunities for development, modelling the standard of practice and professional engagement you want to see.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="chip chip-purple">The evidence base</div>
+        <h2 class="card-title">What this is grounded in</h2>
+        <div class="ev-block">
+          <div class="ev-dot ev-a"></div>
+          <div>
+            <p class="ev-label">Adaptive Leadership — Heifetz & Linsky (Harvard)</p>
+            <p class="ev-body">The dance floor and balcony framework: the discipline of moving between immersive operational response and reflective strategic leadership. The most important leadership skill is knowing which position is needed and choosing it deliberately rather than being pulled by habit or anxiety.</p>
+          </div>
+        </div>
+        <div class="ev-block">
+          <div class="ev-dot ev-p"></div>
+          <div>
+            <p class="ev-label">Psychological safety — Amy Edmondson (Harvard)</p>
+            <p class="ev-body">Teams in which people feel safe to make decisions, speak up, and handle complexity outperform those in which they don't. Leaders who remain operational inadvertently signal that the team isn't trusted to manage without them — and the team learns not to try.</p>
+          </div>
+        </div>
+        <div class="ev-block">
+          <div class="ev-dot ev-t"></div>
+          <div>
+            <p class="ev-label">Identity and role transition research</p>
+            <p class="ev-body">When professional identity fuses with operational function — especially when the transition was under-supported — stepping back feels like loss rather than growth. Understanding this psychologically is what makes the transition sustainable rather than something to be endured indefinitely.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-hint">
+        <span class="nav-hint-icon">☰</span>
+        <p>Use the <strong>menu button</strong> (top left on mobile) to move between sections — or follow the button below.</p>
+      </div>
+      <div class="next-row">
+        <button class="next-btn" onclick="goNext('understand')">Floor vs balcony <span class="next-arrow">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── FLOOR VS BALCONY ── -->
+    <div id="sec-positions" class="section">
+      <p class="page-eyebrow">Two positions</p>
+      <h1 class="page-title">The operational floor and the leadership balcony</h1>
+      <p class="page-intro">In responsive public health work, both positions are real and both have value. The question is not which one matters — it's which one is yours now, and whether you're choosing it or being pulled there by habit.</p>
+
+      <div class="card">
+        <div class="chip chip-amber">What each position offers</div>
+        <h2 class="card-title">Two different kinds of work</h2>
+        <p style="margin-bottom:16px">Neither position is permanently right. The leadership role requires moving between them with intention — but the discipline is to make the balcony your default, and the floor a deliberate, chosen exception.</p>
+        <div class="two-col">
+          <div class="view-box view-floor">
+            <p class="view-tag">On the operational floor</p>
+            <p>You are in the response — managing workflows, handling calls, running the ops lead function.</p>
+            <p>Feedback is immediate. Competence is visible. The outcome is clear.</p>
+            <p>You feel useful and needed in a way that is tangible and certain.</p>
+            <p>This is where your identity has been anchored.</p>
+          </div>
+          <div class="view-box view-balcony">
+            <p class="view-tag">On the leadership balcony</p>
+            <p>You can see patterns across responses that are invisible to those managing them.</p>
+            <p>You can observe how the team is developing professionally and where the educational or practice gaps are.</p>
+            <p>You can ask the questions that shift the team's thinking rather than just solving the immediate problem.</p>
+            <p>You are building something that outlasts any single response or shift.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="chip chip-coral">The cost of staying on the floor</div>
+        <h2 class="card-title">What remains unseen and undone</h2>
+        <div class="insight-row">
+          <div class="i-icon ic-c">👁</div>
+          <div>
+            <p class="i-title">The system patterns go unanalysed</p>
+            <p class="i-body">When you are in the response, you are solving the incident in front of you. The question of why the same type of incident keeps occurring — what the system is producing that it shouldn't — belongs on the balcony. It doesn't get asked from the floor.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-a">🔄</div>
+          <div>
+            <p class="i-title">The team's development stalls</p>
+            <p class="i-body">The team is often growing — but the leader's growth into the leadership role is constrained by continued operational involvement. Leadership identity and capability form through the practice of leadership. When that practice keeps being displaced by operational demands, the identity doesn't fully consolidate — and the leadership function remains underdeveloped precisely where it is most needed.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-p">⚡</div>
+          <div>
+            <p class="i-title">You exhaust yourself on the wrong work</p>
+            <p class="i-body">Holding three roles — operational, management, and clinical leadership — is sustainable under normal conditions and invisible as a risk until pressure hits. When it does, the compounding load becomes suddenly unmanageable, and the stability that the team relies on fractures at exactly the moment they need it most. This is not a failure of individual resilience. It is a structural problem with a structural solution.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-t">🌱</div>
+          <div>
+            <p class="i-title">The leadership identity can't form</p>
+            <p class="i-body">You cannot build confidence in a leadership identity while remaining primarily in an operational role. The identity forms through the practice — through the questions asked, the patterns noticed, the development work done. If that work isn't happening, the identity stays uncertain.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="chip chip-teal">Moving between them</div>
+        <h2 class="card-title">When to step down — and when to return</h2>
+        <p>The balcony is your default position now. The floor is a deliberate, chosen exception — not a habit, not a comfort retreat, and not a way of showing solidarity with a team under pressure.</p>
+        <p style="margin-top:10px">There are genuine moments to step onto the floor: a situation that exceeds the team's current capability, a genuine safety concern that is unmanaged, a teaching moment where your presence alongside someone will accelerate their development. These are floor moments — chosen, purposeful, and temporary.</p>
+        <p style="margin-top:10px">The discipline is not just knowing when to step down. It is developing the habit of stepping back up — and doing so quickly, before the floor reclaims you by familiarity.</p>
+      </div>
+
+      <div class="next-row">
+        <button class="next-btn" onclick="goNext('positions')">Understanding the pull <span class="next-arrow">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── READING THE PULL ── -->
+    <div id="sec-pull" class="section">
+      <p class="page-eyebrow">Understanding the pull</p>
+      <h1 class="page-title">Why stepping back is hard</h1>
+      <p class="page-intro">The pull back to operational involvement isn't a flaw. It's a deeply human response to uncertainty, identity, and the genuine desire to be useful. Understanding it is how you begin to work with it rather than against it.</p>
+
+      <div class="card">
+        <div class="chip chip-amber">What drives the pull</div>
+        <h2 class="card-title">Six forces that bring you back to the floor</h2>
+        <div class="insight-row">
+          <div class="i-icon ic-a">🆔</div>
+          <div>
+            <p class="i-title">Identity — "This is who I am"</p>
+            <p class="i-body">When your professional identity is built around operational excellence, stepping back from it can feel like stepping away from yourself. Researchers call this "role absorption" — when the function becomes the self. The floor is where you know who you are.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-c">🛡</div>
+          <div>
+            <p class="i-title">Control — "If I don't do it, it won't be done right"</p>
+            <p class="i-body">Years of high standards and deep expertise make it genuinely difficult to trust that others will reach the same bar. This is not arrogance — it's often accurate in the short term. But in the long term, it prevents the team from ever reaching that bar.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-p">⚡</div>
+          <div>
+            <p class="i-title">Speed — "It's faster if I just do it"</p>
+            <p class="i-body">In the short term, this is often true. It is faster to fix something yourself than to coach someone through fixing it. But the short-term efficiency creates long-term dependency — and the same problem returns, indefinitely, requiring your intervention each time.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-t">💡</div>
+          <div>
+            <p class="i-title">Competence certainty — "I know how to do this"</p>
+            <p class="i-body">Operational work provides immediate, visible feedback. You do something, and you can see whether it worked. Leadership work is slower, less visible, and harder to measure. The floor offers certainty; the balcony offers ambiguity. Of course the floor is attractive.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-a">🤝</div>
+          <div>
+            <p class="i-title">Belonging — "I want to stay one of the team"</p>
+            <p class="i-body">There is something genuinely warm about being embedded with your colleagues — working alongside them, sharing the same pressures. Stepping to the balcony can feel like separating yourself. But a leader who remains peer-embedded cannot hold the team safely.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-c">🆘</div>
+          <div>
+            <p class="i-title">Anxiety — "Something will go wrong if I step back"</p>
+            <p class="i-body">In high-stakes clinical environments, the stakes are real. The fear of harm drives vigilance. But there is a difference between appropriate oversight and anxious involvement. The clinical leader's job is to build a team whose standard of care does not depend on their constant presence.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:var(--surface2)">
+        <div class="chip chip-teal">A reframe worth sitting with</div>
+        <h2 class="card-title">The pull is information</h2>
+        <p>When you feel the pull to step in — notice it before acting on it. Ask: <em>what is this pull protecting?</em> Is it protecting a standard, a response quality, a genuine gap? Or is it protecting a familiar sense of self, a feeling of certainty, a discomfort with the space you leave?</p>
+        <p style="margin-top:10px">Not every pull needs to be resisted. Some of them are correct — there are genuine moments to step down. But the practice begins with the pause: noticing the pull, naming it, and then choosing your response rather than following the impulse automatically.</p>
+      </div>
+
+      <div class="next-row">
+        <button class="next-btn" onclick="goNext('pull')">Your new questions <span class="next-arrow">→</span></button>
+      </div>
+    </div>
+    <div id="sec-questions" class="section">
+      <p class="page-eyebrow">A different kind of attention</p>
+      <h1 class="page-title">The questions that belong to you now</h1>
+      <p class="page-intro">Clinical leadership involves a distinct set of questions — ones that only someone in your position can ask. These are the balcony questions. They are different from the operational questions, and learning to notice the difference is a core part of the role.</p>
+
+      <div class="card">
+        <div class="chip chip-amber">Floor questions vs balcony questions</div>
+        <h2 class="card-title">Knowing which question is yours</h2>
+        <p style="margin-bottom:16px">Floor questions are not wrong — they are necessary. But they belong to the nursing manager and the operational team. The balcony questions are the ones only you, in your position, are placed to ask.</p>
+        <div class="two-col">
+          <div class="view-box view-floor">
+            <p class="view-tag">Floor questions (nursing manager / ops team)</p>
+            <p>How do we manage this workload today?</p>
+            <p>Who is covering which role this shift?</p>
+            <p>What is the fastest way to resolve this response?</p>
+            <p>What are today's priorities for the team?</p>
+          </div>
+          <div class="view-box view-balcony">
+            <p class="view-tag">Balcony questions (yours)</p>
+            <p>Where is our clinical practice diverging from our standard?</p>
+            <p>What pattern am I seeing across these responses or incidents?</p>
+            <p>What process improvement would make the biggest difference?</p>
+            <p>What do our stakeholders need from us that we aren't providing?</p>
+            <p>What does this team need to learn — and how do I create that?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="chip chip-teal">Balcony questions in practice</div>
+        <h2 class="card-title">What to ask, and when</h2>
+        <div class="insight-row">
+          <div class="i-icon ic-t">📊</div>
+          <div>
+            <p class="i-title">About quality and standards</p>
+            <p class="i-body">Where is practice genuinely meeting the standard — and where is it meeting it on paper but not in reality? What patterns am I seeing across our responses, our near-misses, our complaints? Is there a systemic thread I haven't yet named? What would a quality review of our work actually show?</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-p">💡</div>
+          <div>
+            <p class="i-title">About process and innovation</p>
+            <p class="i-body">Where is the system creating unnecessary friction — for the team, for the people we serve, for our partners? What would a better workflow look like? Where are we doing things a certain way because that's how they've always been done — and is that still the right reason?</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-a">🌐</div>
+          <div>
+            <p class="i-title">About the system we operate in</p>
+            <p class="i-body">What do our key stakeholders need from us, and are we providing it? Where are the relationships that need building or repairing? What is happening in the broader health system that we should be responding to — or influencing? Who needs to know what we are doing and why?</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-c">🎓</div>
+          <div>
+            <p class="i-title">About education and professional development</p>
+            <p class="i-body">What is the clinical and professional learning this team needs — individually and collectively? Where are the gaps in knowledge or practice that I can see from the balcony but that are invisible from the floor? What education would strengthen the standard we're holding? How can I support the nursing manager's people development work with clinical insight?</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-t">🔭</div>
+          <div>
+            <p class="i-title">About your own leadership</p>
+            <p class="i-body">Am I spending time on what only I can do? What leadership work has been deferred for the next quiet period that never arrives? Where is my relationship with the nursing manager genuinely working — and where does it need clarifying? What does the team need from this role that it isn't currently getting?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" style="background:var(--surface2)">
+        <div class="chip chip-purple">A practice, not a test</div>
+        <p>You won't have good answers to all of these questions all of the time. The point isn't the answers — it's the habit of asking. A public health leader who regularly asks these questions, even imperfectly, is doing the work. One who rarely asks them — because the operational floor is always too demanding — is not doing the leadership role, regardless of how hard they are working.</p>
+      </div>
+
+      <div class="next-row">
+        <button class="next-btn" onclick="goNext('questions')">Role discipline <span class="next-arrow">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── ROLE DISCIPLINE ── -->
+    <div id="sec-discipline" class="section">
+      <p class="page-eyebrow">The hardest practice</p>
+      <h1 class="page-title">Role discipline — staying off the floor</h1>
+      <p class="page-intro">Understanding the shift conceptually is one thing. The practice is something else. Role discipline is the set of specific, concrete commitments that keep you on the balcony when every instinct is pulling you down. It is not passive. It requires active, daily choices.</p>
+
+      <div class="card">
+        <div class="chip chip-coral">What role discipline means in practice</div>
+        <h2 class="card-title">The specific things to stop</h2>
+        <p style="margin-bottom:14px">These are the behaviours that feel helpful, collegial, or urgent — and that quietly undermine the transition every time they happen.</p>
+        <div class="insight-row">
+          <div class="i-icon ic-c">📋</div>
+          <div>
+            <p class="i-title">Rostering yourself into operational roles</p>
+            <p class="i-body">Even when the roster is tight. Even when it feels like the responsible thing to do. Every time you appear on the operational roster, you signal to the team, to the organisation, and to yourself that you are still an operational resource. That signal is very hard to undo. Your name on the roster is not a small thing.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-a">📞</div>
+          <div>
+            <p class="i-title">Answering the phones and managing workflows</p>
+            <p class="i-body">In a busy response environment, the phone rings and someone needs to pick it up. That person should not be you. Not because the call doesn't matter — it does — but because every time you manage a workflow or take a call, you step out of the position from which you can see the whole system. And the team learns that you will step in, so they wait for you to.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-p">🤝</div>
+          <div>
+            <p class="i-title">Taking the ops lead role to show you're a team player</p>
+            <p class="i-body">This one is particularly difficult because the impulse behind it is genuine — you care about your team, you see they're under pressure, and stepping in feels like the right expression of solidarity. But a leader who takes the ops lead role to ease pressure is removing themselves from their actual function and teaching the team that solidarity means sharing the operational load, rather than building a system that manages it differently.</p>
+          </div>
+        </div>
+        <div class="insight-row">
+          <div class="i-icon ic-t">🔄</div>
+          <div>
+            <p class="i-title">Stepping in to reduce the team's pressure by absorbing it yourself</p>
+            <p class="i-body">The pressure the team is under is real. The impulse to relieve it is humane. But absorbing operational pressure into yourself is not a sustainable leadership strategy — and it prevents the more important work of addressing why the pressure exists in the first place. That second work requires the balcony. You cannot do it from the floor.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="chip chip-teal">What to do instead</div>
+        <h2 class="card-title">The balcony response to operational pressure</h2>
+        <div class="mc">
+          <div class="mc-dot mc-t"></div>
+          <p><strong>Be visibly present, not operationally involved.</strong> Move through the space. Ask targeted questions. "What's the priority right now?" "What do you need?" "What would make the next hour more manageable?" This signals care and attention without removing you from the overview position.</p>
+        </div>
+        <div class="mc">
+          <div class="mc-dot mc-a"></div>
+          <p><strong>Guide those who hold the operational roles rather than replacing them.</strong> Your job when things are busy is to support the ops lead, not to become the ops lead. "What's your read on the situation? What would help you right now?" keeps them in their role and you in yours.</p>
+        </div>
+        <div class="mc">
+          <div class="mc-dot mc-p"></div>
+          <p><strong>Name what you're seeing, not doing.</strong> "I can see this is a heavy period. I'm watching how we're managing it and I'll debrief with you afterward." This is balcony presence — you are paying attention, you are engaged, and you are not on the floor.</p>
+        </div>
+        <div class="mc">
+          <div class="mc-dot mc-t"></div>
+          <p><strong>Use the pressure as information.</strong> A period of high operational demand is your richest source of balcony data. What is the system struggling to manage? Where are the process weaknesses? Where is the standard holding and where is it drifting? What does this period reveal about what needs to change structurally or educationally? None of these questions can be answered if you are answering phones.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="chip chip-purple">Working with the nursing manager — not instead of them</div>
+        <h2 class="card-title">A relationship to invest in deliberately</h2>
+        <p>Where a management role exists alongside yours — whether that is a nursing manager, an operations manager, or a team leader — the opportunity is to utilise it fully rather than sitting alongside it without full effect. This means actively supporting the conditions in which that role can function with real authority and real confidence, rather than unconsciously remaining the go-to for everything that role should hold.</p>
+        <p style="margin-top:10px">This means being clear about the distinction between what belongs to them and what belongs to you. People management, rostering, day-to-day operational oversight — theirs. Standards, quality, clinical practice, innovation, system navigation — yours. Where these intersect, the question is how you work together, not which of you takes over.</p>
+        <div class="mc" style="margin-top:14px">
+          <div class="mc-dot mc-t"></div>
+          <p><strong>Back their decisions visibly.</strong> When the nursing manager makes a decision — about staffing, about a staff situation, about operational priorities — your role is to support that publicly, not to revisit it. If you have a concern, raise it with them directly, not by stepping around them.</p>
+        </div>
+        <div class="mc">
+          <div class="mc-dot mc-a"></div>
+          <p><strong>Offer clinical insight, not operational override.</strong> When a people management or operational situation has a clinical dimension, your role is to provide the clinical perspective — not to take over the management of it. "Here's what I'm seeing clinically — how does that change your thinking?" keeps the authority where it belongs.</p>
+        </div>
+        <div class="mc">
+          <div class="mc-dot mc-p"></div>
+          <p><strong>Make the role boundary explicit and agreed.</strong> Have a direct conversation about where each role starts and stops — not as a one-off, but as an ongoing calibration. "What feels unclear between our roles right now?" is a question worth asking regularly, especially as the team's structure evolves.</p>
+        </div>
+        <div class="mc">
+          <div class="mc-dot mc-t"></div>
+          <p><strong>Let them bring you problems rather than you bringing them solutions.</strong> If you are consistently arriving with solutions to operational problems, you are still, functionally, the operational lead. If they are arriving to you with problems and you are helping them think through solutions, you are a clinical leadership resource — which is the right relationship.</p>
+        </div>
+      </div>
+
+      <div class="card" style="background:var(--surface2)">
+        <div class="chip chip-amber">The honest difficulty</div>
+        <h2 class="card-title">What this will feel like</h2>
+        <p>Role discipline will feel wrong before it feels right. Standing back when things are busy will feel like abandonment. Watching someone handle something more slowly than you would will feel frustrating. Not picking up the phone will feel irresponsible. The team may express that they miss having you more present operationally — and that will feel like evidence that stepping back was a mistake.</p>
+        <p style="margin-top:10px">None of these feelings are evidence that stepping back was wrong. They are the feelings of a new identity forming under uncomfortable conditions. The discomfort is the transition. It does not mean you are doing it incorrectly.</p>
+        <p style="margin-top:10px">What changes is not the feeling — at least not immediately. What changes is what you do with the feeling. You notice it, name it, and hold the role discipline anyway.</p>
+      </div>
+
+      <div class="next-row">
+        <button class="next-btn" onclick="goNext('discipline')">Real moments <span class="next-arrow">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── REAL MOMENTS ── -->
+    <div id="sec-scenarios" class="section">
+      <p class="page-eyebrow">Real moments</p>
+      <h1 class="page-title">When the pull is strongest</h1>
+      <p class="page-intro">These are the specific moments in public health leadership when the operational floor exerts its hardest pull. Each one explores what's driving it, what it costs, and what staying on the balcony looks like instead.</p>
+
+      <div class="scenario" id="sc1">
+        <div class="sc-head" onclick="toggleScenario('sc1')">
+          <div>
+            <p class="sc-title">You walk past something that needs doing and no one is doing it</p>
+            <p class="sc-desc">A task is clearly outstanding. You could fix it in two minutes.</p>
+          </div>
+          <span class="sc-caret">›</span>
+        </div>
+        <div class="sc-body">
+          <p class="sc-tension">The pull: to fix it. It would take you two minutes, it needs doing, and walking past it feels like abdication.</p>
+          <p class="sc-cost">When you fix it without addressing why it wasn't done, the pattern continues. The team learns that outstanding tasks resolve themselves. You've solved the symptom and left the cause intact — and you'll be back here tomorrow.</p>
+          <div class="mc"><div class="mc-dot mc-t"></div><p><strong>Balcony response:</strong> Note it. Then ask the relevant person: "I noticed X wasn't done — what was happening there?" You're gathering information, not assigning blame. The answer tells you something about workload, capability, or prioritisation — all balcony questions.</p></div>
+          <div class="mc"><div class="mc-dot mc-a"></div><p><strong>If it genuinely can't wait:</strong> Ask someone to do it rather than doing it yourself. "Can you get to X before the end of the hour?" This stays in your role while still moving things forward.</p></div>
+          <div class="mc"><div class="mc-dot mc-p"></div><p><strong>The longer pattern:</strong> If this keeps happening, that's your real work — understanding why, and what needs to change structurally. That's a balcony conversation, not a floor fix.</p></div>
+        </div>
+      </div>
+
+      <div class="scenario" id="sc2">
+        <div class="sc-head" onclick="toggleScenario('sc2')">
+          <div>
+            <p class="sc-title">A staff member comes to you with a problem they should be able to solve</p>
+            <p class="sc-desc">Someone brings you a clinical or operational question that's within their scope and competence.</p>
+          </div>
+          <span class="sc-caret">›</span>
+        </div>
+        <div class="sc-body">
+          <p class="sc-tension">The pull: to answer it. You know the answer. It's quicker. They're asking.</p>
+          <p class="sc-cost">Every time you answer a question someone could have worked through, you confirm their belief that they need you for this. The queue of questions grows. Your day fills with problems that belong elsewhere. And the person asking stops developing the judgment they need.</p>
+          <div class="mc"><div class="mc-dot mc-t"></div><p><strong>Balcony response:</strong> "What do you think?" — asked genuinely, not as a test. Then listen. You often find they already know the answer and needed permission, not information. Your role was to create the space for them to trust their own judgment.</p></div>
+          <div class="mc"><div class="mc-dot mc-a"></div><p><strong>If they genuinely don't know:</strong> Walk them through your thinking rather than giving them your conclusion. "Here's how I'd approach this — what factors would you weigh?" builds their decision-making framework, not dependence on yours.</p></div>
+          <div class="mc"><div class="mc-dot mc-p"></div><p><strong>The pattern to notice:</strong> If the same person keeps bringing you solvable problems, that's a development conversation — about building their confidence and authority, not about the individual questions.</p></div>
+        </div>
+      </div>
+
+      <div class="scenario" id="sc3">
+        <div class="sc-head" onclick="toggleScenario('sc3')">
+          <div>
+            <p class="sc-title">Things are getting busy and your instinct is to pitch in</p>
+            <p class="sc-desc">The team is under pressure. Stepping in feels like the right thing to do.</p>
+          </div>
+          <span class="sc-caret">›</span>
+        </div>
+        <div class="sc-body">
+          <p class="sc-tension">The pull: solidarity, usefulness, care for your team. And if you don't help, who will?</p>
+          <p class="sc-cost">When you move to the floor under pressure, you lose the oversight function at exactly the moment when oversight matters most. Busy periods are when errors cluster, when communication breaks down, when patterns become visible — to someone who is watching.</p>
+          <div class="mc"><div class="mc-dot mc-t"></div><p><strong>Balcony response during pressure:</strong> Move through the space, visible and calm. Ask short targeted questions: "What do you need right now?" "What's the biggest priority?" This signals presence and care without removing you from the overview position.</p></div>
+          <div class="mc"><div class="mc-dot mc-a"></div><p><strong>There are genuine moments to step in:</strong> A patient safety issue that is unmanaged. A team member who is genuinely out of their depth. A situation that exceeds the team's current capacity. These are floor moments — chosen, not habitual.</p></div>
+          <div class="mc"><div class="mc-dot mc-p"></div><p><strong>After the pressure passes:</strong> Reflect with the team. "That was a hard stretch — what would have made it more manageable?" This is balcony work that directly serves the next difficult period.</p></div>
+        </div>
+      </div>
+
+      <div class="scenario" id="sc4">
+        <div class="sc-head" onclick="toggleScenario('sc4')">
+          <div>
+            <p class="sc-title">Someone does something differently than you would have</p>
+            <p class="sc-desc">A team member handles a situation in a way that isn't how you'd have done it — but it's within safe limits.</p>
+          </div>
+          <span class="sc-caret">›</span>
+        </div>
+        <div class="sc-body">
+          <p class="sc-tension">The pull: to step in and redirect. To make sure it's done the right way. Your way.</p>
+          <p class="sc-cost">When you consistently redirect to your way, you communicate that there is only one right approach — yours. This stifles clinical judgment, creates anxiety, and produces a team of people who wait for your instruction rather than exercising their own expertise.</p>
+          <div class="mc"><div class="mc-dot mc-t"></div><p><strong>The question to ask yourself first:</strong> Is this a safety issue? Is it a quality issue? Or is it just not how I would have done it? The first two warrant input. The third rarely does.</p></div>
+          <div class="mc"><div class="mc-dot mc-a"></div><p><strong>If it's worth discussing:</strong> Do it afterward, not during. "How did you think through that?" is better than "you should have done X." The goal is understanding their reasoning, not correcting it toward yours.</p></div>
+          <div class="mc"><div class="mc-dot mc-p"></div><p><strong>Notice what it tells you:</strong> Multiple people doing things differently in ways that concern you suggests a standards conversation with the whole team — not individual corrections that leave the pattern intact.</p></div>
+        </div>
+      </div>
+
+      <div class="scenario" id="sc5">
+        <div class="sc-head" onclick="toggleScenario('sc5')">
+          <div>
+            <p class="sc-title">The nursing manager brings you an operational problem to solve</p>
+            <p class="sc-desc">A people management or operational situation lands with you — and you have a clear view of what should be done.</p>
+          </div>
+          <span class="sc-caret">›</span>
+        </div>
+        <div class="sc-body">
+          <p class="sc-tension">The pull: to solve it. You know the situation, you have the experience, and the nursing manager is asking. It would be faster and it would relieve their stress.</p>
+          <p class="sc-cost">Every time you solve an operational or people management problem that belongs to the nursing manager, you signal — however unintentionally — that the role isn't fully theirs. Over time they bring you problems rather than developing their own judgment about them. The boundary between your roles becomes blurred, and your capacity for the clinical leadership work narrows further.</p>
+          <div class="mc"><div class="mc-dot mc-t"></div><p><strong>Offer thinking, not decisions.</strong> "Here's how I'd think about this — what's your read?" keeps the decision with them and develops their judgment. You are a resource, not a substitute.</p></div>
+          <div class="mc"><div class="mc-dot mc-a"></div><p><strong>Name the boundary gently when it helps.</strong> "That sits in your domain more than mine — I think you've got what you need to call this." This is support, not abandonment. It backs their authority explicitly.</p></div>
+          <div class="mc"><div class="mc-dot mc-p"></div><p><strong>If there's a genuine clinical dimension:</strong> Provide that specifically. "Clinically, I'd be thinking about X — does that change what you're planning?" This is your contribution — not the operational management of it.</p></div>
+        </div>
+      </div>
+
+      <div class="scenario" id="sc6">
+        <div class="sc-head" onclick="toggleScenario('sc6')">
+          <div>
+            <p class="sc-title">You see a team member making slow progress on a delegated task</p>
+            <p class="sc-desc">Someone is working on something you could do faster — and time matters.</p>
+          </div>
+          <span class="sc-caret">›</span>
+        </div>
+        <div class="sc-body">
+          <p class="sc-tension">The pull: to take it back. You're watching something that could be done in half the time, and the clock is moving.</p>
+          <p class="sc-cost">Taking a task back teaches the person that slow progress results in removal of responsibility. They learn to either rush (at the cost of quality) or to flag problems earlier than they otherwise would — neither of which builds the capability you need them to develop.</p>
+          <div class="mc"><div class="mc-dot mc-t"></div><p><strong>First question:</strong> Is the pace genuinely creating a risk — to a response quality or a deadline that matters? Or is it just slower than you'd be? Only the first warrants intervention.</p></div>
+          <div class="mc"><div class="mc-dot mc-a"></div><p><strong>If you need to intervene:</strong> Do it alongside, not by taking over. "Let me work through this with you" keeps them in the task and makes the thinking visible. It's a teaching moment, not a rescue.</p></div>
+          <div class="mc"><div class="mc-dot mc-p"></div><p><strong>If the pace is just slow:</strong> Let it be. Debrief afterward. "How did you feel about your pace on that?" opens the conversation without judgment and gives them the chance to reflect on what they'd do differently.</p></div>
+        </div>
+      </div>
+
+      <div class="scenario" id="sc7">
+        <div class="sc-head" onclick="toggleScenario('sc7')">
+          <div>
+            <p class="sc-title">The team is asking you to be more present on the floor</p>
+            <p class="sc-desc">Staff are expressing that they want you more involved, more hands-on, more "one of us."</p>
+          </div>
+          <span class="sc-caret">›</span>
+        </div>
+        <div class="sc-body">
+          <p class="sc-tension">The pull: to respond to what they're asking for — to be more present operationally, to meet their expressed need.</p>
+          <p class="sc-cost">What the team asks for and what the team needs are not always the same thing. A team asking for more operational presence from their leader may actually be expressing anxiety, under-confidence, or a lack of clarity about their own authority — none of which is solved by the leader doing more floor work.</p>
+          <div class="mc"><div class="mc-dot mc-t"></div><p><strong>Listen to the feeling, not the request:</strong> "I hear that you want me more involved — can you tell me more about what's feeling unsupported?" The answer usually reveals what is actually needed, which is rarely more operational input from you.</p></div>
+          <div class="mc"><div class="mc-dot mc-a"></div><p><strong>What they may actually need:</strong> Clearer authority ("who decides X when you're not here?"), more confidence ("you're ready for this — I trust your judgment"), or more connection ("let's have a proper team check-in each week"). These are balcony interventions that address the real need.</p></div>
+          <div class="mc"><div class="mc-dot mc-p"></div><p><strong>Be honest:</strong> "My role has changed, and I know that's an adjustment for all of us. My job now is to support you to be excellent — not to do what you do alongside you. Let's talk about what support actually looks like from where I'm standing now."</p></div>
+        </div>
+      </div>
+
+      <div class="next-row">
+        <button class="next-btn" onclick="goNext('scenarios')">Daily check-in <span class="next-arrow">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── DAILY CHECK-IN ── -->
+    <div id="sec-checkin" class="section">
+      <p class="page-eyebrow">Daily practice</p>
+      <h1 class="page-title">A moment on the balcony</h1>
+      <p class="page-intro">The discipline of the balcony is built through small, consistent moments of reflection — not through occasional large efforts. Use this as a brief daily practice: at the end of a shift, or before a difficult day begins.</p>
+
+      <div class="card">
+        <div class="chip chip-teal">Where were you today?</div>
+        <h2 class="card-title">Three readings</h2>
+        <p style="margin-bottom:18px">Rate yourself on where you spent your time and attention. Not to judge — to notice. Patterns become visible over time.</p>
+
+        <div class="meter-wrap">
+          <div class="meter-top">
+            <span class="meter-label">Time on the balcony today</span>
+            <span class="meter-val" id="m1v">5</span>
+          </div>
+          <div class="meter-track"><div class="meter-fill" id="m1f" style="width:50%;background:var(--teal-mid)"></div></div>
+          <input type="range" min="1" max="10" value="5" oninput="updateM('m1',this.value)" id="m1">
+          <p style="font-size:11.5px;color:var(--text3);margin-top:2px">1 = entirely on the floor, 10 = mostly on the balcony</p>
+        </div>
+
+        <div class="meter-wrap">
+          <div class="meter-top">
+            <span class="meter-label">Strength of pull to the floor</span>
+            <span class="meter-val" id="m2v">5</span>
+          </div>
+          <div class="meter-track"><div class="meter-fill" id="m2f" style="width:50%;background:var(--amber-mid)"></div></div>
+          <input type="range" min="1" max="10" value="5" oninput="updateM('m2',this.value)" id="m2">
+          <p style="font-size:11.5px;color:var(--text3);margin-top:2px">Higher = stronger pull today</p>
+        </div>
+
+        <div class="meter-wrap">
+          <div class="meter-top">
+            <span class="meter-label">Clarity about my leadership role today</span>
+            <span class="meter-val" id="m3v">5</span>
+          </div>
+          <div class="meter-track"><div class="meter-fill" id="m3f" style="width:50%;background:var(--purple)"></div></div>
+          <input type="range" min="1" max="10" value="5" oninput="updateM('m3',this.value)" id="m3">
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="chip chip-amber">Reflection prompts</div>
+        <h2 class="card-title" style="margin-bottom:14px">Four questions</h2>
+        <p style="margin-bottom:16px">Open the ones that feel most relevant today.</p>
+
+        <div class="reflect-item" id="rq1">
+          <div class="reflect-head" onclick="toggleQ('rq1')">
+            <span class="reflect-q">Where was the pull strongest today — and what was it protecting?</span>
+            <span class="reflect-caret">›</span>
+          </div>
+          <div class="reflect-body">
+            <textarea id="rq1t" placeholder="Name the specific moment. What drove the pull — identity, control, speed, anxiety?"></textarea>
+          </div>
+        </div>
+
+        <div class="reflect-item" id="rq2">
+          <div class="reflect-head" onclick="toggleQ('rq2')">
+            <span class="reflect-q">What did I notice from the balcony today that I wouldn't have seen from the floor?</span>
+            <span class="reflect-caret">›</span>
+          </div>
+          <div class="reflect-body">
+            <textarea id="rq2t" placeholder="A pattern, a dynamic, a person — something that came into view because you were watching rather than doing..."></textarea>
+          </div>
+        </div>
+
+        <div class="reflect-item" id="rq3">
+          <div class="reflect-head" onclick="toggleQ('rq3')">
+            <span class="reflect-q">What did I let someone else handle today — and what happened?</span>
+            <span class="reflect-caret">›</span>
+          </div>
+          <div class="reflect-body">
+            <textarea id="rq3t" placeholder="Even if it didn't go perfectly — what did you learn from stepping back?"></textarea>
+          </div>
+        </div>
+
+        <div class="reflect-item" id="rq4">
+          <div class="reflect-head" onclick="toggleQ('rq4')">
+            <span class="reflect-q">What is one balcony question I want to carry into tomorrow?</span>
+            <span class="reflect-caret">›</span>
+          </div>
+          <div class="reflect-body">
+            <textarea id="rq4t" placeholder="Something to watch for, something to ask, someone to pay attention to..."></textarea>
+          </div>
+        </div>
+
+        <div class="save-row">
+          <button class="save-btn" onclick="saveEntry()">Save to journal</button>
+          <span class="save-confirm" id="save-confirm">Saved ✓</span>
+        </div>
+      </div>
+
+      <div class="next-row">
+        <button class="next-btn" onclick="goNext('checkin')">My journal <span class="next-arrow">→</span></button>
+      </div>
+    </div>
+
+    <!-- ── JOURNAL ── -->
+    <div id="sec-journal" class="section">
+      <p class="page-eyebrow">My journal</p>
+      <h1 class="page-title">Your reflections over time</h1>
+      <p class="page-intro">Look back over your entries. Notice whether the pull is changing — whether the balcony is becoming more familiar, more natural, more home.</p>
+      <div id="journal-list"></div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+const STORE_KEY = 'balcony_journal_v1';
+const sectionOrder = ['understand','positions','pull','questions','discipline','scenarios','checkin','journal'];
+
+function loadEntries() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || []; }
+  catch { return []; }
+}
+function saveEntries(e) { localStorage.setItem(STORE_KEY, JSON.stringify(e)); }
+
+function enterApp() {
+  document.getElementById('intro-screen').style.display = 'none';
+  document.getElementById('app-shell').classList.add('visible');
+  renderJournal();
+}
+
+function returnToStory() {
+  document.getElementById('app-shell').classList.remove('visible');
+  document.getElementById('app-shell').style.display = 'none';
+  const intro = document.getElementById('intro-screen');
+  intro.style.display = 'flex';
+  window.scrollTo(0, 0);
+  closeMenu();
+}
+
+function showSection(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('sec-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+  closeMenu();
+  if (id === 'journal') renderJournal();
+}
+
+function goNext(currentId) {
+  const idx = sectionOrder.indexOf(currentId);
+  if (idx === -1 || idx >= sectionOrder.length - 1) return;
+  const nextId = sectionOrder[idx + 1];
+  const nextBtn = document.querySelector(`.nav-item[onclick*="'${nextId}'"]`);
+  showSection(nextId, nextBtn);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleMenu() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+}
+function closeMenu() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+}
+
+function toggleScenario(id) {
+  const el = document.getElementById(id);
+  const wasOpen = el.classList.contains('open');
+  document.querySelectorAll('.scenario').forEach(s => s.classList.remove('open'));
+  if (!wasOpen) el.classList.add('open');
+}
+
+function toggleQ(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+function updateM(id, val) {
+  document.getElementById(id + 'v').textContent = val;
+  document.getElementById(id + 'f').style.width = (val * 10) + '%';
+}
+
+function saveEntry() {
+  const q1 = document.getElementById('rq1t').value.trim();
+  const q2 = document.getElementById('rq2t').value.trim();
+  const q3 = document.getElementById('rq3t').value.trim();
+  const q4 = document.getElementById('rq4t').value.trim();
+  if (!q1 && !q2 && !q3 && !q4) return;
+
+  const entry = {
+    id: Date.now(),
+    date: new Date().toLocaleDateString('en-AU', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }),
+    m1: document.getElementById('m1v').textContent,
+    m2: document.getElementById('m2v').textContent,
+    m3: document.getElementById('m3v').textContent,
+    q1, q2, q3, q4
+  };
+
+  const entries = loadEntries();
+  entries.unshift(entry);
+  saveEntries(entries);
+
+  ['rq1t','rq2t','rq3t','rq4t'].forEach(id => document.getElementById(id).value = '');
+  ['m1','m2','m3'].forEach(id => { document.getElementById(id).value = 5; updateM(id, 5); });
+  document.querySelectorAll('.reflect-item').forEach(r => r.classList.remove('open'));
+
+  const c = document.getElementById('save-confirm');
+  c.classList.add('show');
+  setTimeout(() => c.classList.remove('show'), 2200);
+}
+
+function renderJournal() {
+  const entries = loadEntries();
+  const container = document.getElementById('journal-list');
+  if (!entries.length) {
+    container.innerHTML = '<div class="empty-state"><p>No entries yet.</p><p style="margin-top:8px">Complete a daily check-in to begin building your record.</p></div>';
+    return;
+  }
+  const qlabels = ['Where the pull was strongest','What I noticed from the balcony','What I let go of','My question for tomorrow'];
+  const qkeys = ['q1','q2','q3','q4'];
+  container.innerHTML = entries.map(e => `
+    <div class="journal-entry" id="je-${e.id}">
+      <p class="je-date">${e.date}</p>
+      <div class="je-meters">
+        <span class="je-meter-chip">Balcony time <strong>${e.m1}/10</strong></span>
+        <span class="je-meter-chip">Pull strength <strong>${e.m2}/10</strong></span>
+        <span class="je-meter-chip">Role clarity <strong>${e.m3}/10</strong></span>
+      </div>
+      ${qkeys.map((k,i) => e[k] ? `
+        <div class="je-qa">
+          <p class="je-qlabel">${qlabels[i]}</p>
+          <p class="je-qtext">${e[k].replace(/</g,'&lt;')}</p>
+        </div>` : '').join('')}
+      <div class="je-delete">
+        <button class="delete-btn" onclick="deleteEntry(${e.id})">Remove entry</button>
+      </div>
+    </div>`).join('');
+}
+
+function deleteEntry(id) {
+  saveEntries(loadEntries().filter(e => e.id !== id));
+  renderJournal();
+}
+</script>
+</body>
+</html>
